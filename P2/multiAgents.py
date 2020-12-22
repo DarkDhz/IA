@@ -67,50 +67,14 @@ class ReflexAgent(Agent):
         to create a masterful evaluation function.
         """
         # Useful information you can extract from a GameState (pacman.py)
-       
-
-
-       	successorGameState = currentGameState.generatePacmanSuccessor(action)
+        successorGameState = currentGameState.generatePacmanSuccessor(action)
         newPos = successorGameState.getPacmanPosition()
         newFood = successorGameState.getFood()
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
-        whereGhosts = successorGameState.getGhostPositions()
-        powerCapuseles = successorGameState.getCapsules()
-
-        
-        if successorGameState.isLose():
-        	return -20000
-
-        if successorGameState.isWin():
-        	return 20000
-
-
-        closestGhost = 99999
-
-        for ghostPos in whereGhosts:
-        	distance = util.manhattanDistance(newPos, ghostPos)
-        	if distance < closestGhost:
-        		closestGhost = distance
-
-        
-       	if closestGhost < 4:
-       		return -10000
-
-        closestFood = 99999
-
-        for foodPos in newFood.asList():
-        	distance = util.manhattanDistance(newPos, foodPos)
-        	if (closestFood > distance):
-        		closestFood = distance
-
-        if (min(newScaredTimes) > 0):
-        	return successorGameState.getScore() + closestGhost + min(newScaredTimes) 
-        else:
-        	return -closestFood + successorGameState.getScore() - closestGhost	
-
-        #return -closestFood + successorGameState.getScore() - closestGhost + min(newScaredTimes)
+        "*** YOUR CODE HERE ***"
+        return successorGameState.getScore()
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -148,47 +112,30 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
 
     def getAction(self, gameState):
-    	
-    	# Minmax funcion
-    	# gameState = the actual state of the game
-    	# depth = the depth of the tree
-    	# maximizingPlayer = the agent we are exploring
-    	# return (costOfAction, move)
-        def minimax(gameState, depth, maximizingPlayer):
-        	# get posible actions of the agent
-        	actions = gameState.getLegalActions(maximizingPlayer)
-        	# check terminal states
-        	if len(actions) == 0 or depth == self.depth or gameState.isLose() or gameState.isWin():
-        		return (self.evaluationFunction(gameState), None)
+        """
+        Returns the minimax action from the current gameState using self.depth
+        and self.evaluationFunction.
 
-        	betterAction = None
-        	# if agent is pacman
-        	if maximizingPlayer == 0:
-        		maxEval = (float("-inf"))
-        		# get the maxValue
-        		for action in actions:
-        			evaluation = minimax(gameState.generateSuccessor(0, action), depth , 1)[0]
-        			if maxEval < evaluation:
-        				maxEval = evaluation
-        				betterAction = action
-        		return (maxEval, betterAction)
-        	# else, agent might be a ghost
-        	else:
-        		minEval = float("inf")
-        		# get the minValue
-        		for action in actions:
-        			succ = gameState.generateSuccessor(maximizingPlayer, action)
-        			if gameState.getNumAgents()-1 > maximizingPlayer:
-        				evaluation = minimax(succ, depth, maximizingPlayer+1)[0]
-        			else:
-        				evaluation = minimax(succ, depth +1, 0)[0]
-        			if minEval > evaluation:
-        				minEval = evaluation
-        				betterAction = action
-        		return (minEval, betterAction)	
+        Here are some method calls that might be useful when implementing minimax.
 
-        return minimax(gameState, 0, 0)[1]
+        gameState.getLegalActions(agentIndex):
+        Returns a list of legal actions for an agent
+        agentIndex=0 means Pacman, ghosts are >= 1
 
+        gameState.generateSuccessor(agentIndex, action):
+        Returns the successor game state after an agent takes an action
+
+        gameState.getNumAgents():
+        Returns the total number of agents in the game
+
+        gameState.isWin():
+        Returns whether or not the game state is a winning state
+
+        gameState.isLose():
+        Returns whether or not the game state is a losing state
+        """
+        "*** YOUR CODE HERE ***"
+        util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
